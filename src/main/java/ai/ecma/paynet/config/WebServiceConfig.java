@@ -22,19 +22,5 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return new ServletRegistrationBean(servlet, "/api/paynet/*");
     }
 
-//    @Bean(name="ProviderWebService")
-//    public Wsdl11Definition defaultWsdl11Definition() {
-//        SimpleWsdl11Definition wsdl11Definition = new SimpleWsdl11Definition();
-//        wsdl11Definition.setWsdl(new ClassPathResource("/ProviderWebService.wsdl"));
-//
-//        return wsdl11Definition;
-//    }
-
-//    @Bean
-//    public XsdSchema xsdSchema(){
-//        new SimpleXsdSchema(new ClassPathResource("/ProviderWebService.xsd"))
-//    }
-
-
 }
 
