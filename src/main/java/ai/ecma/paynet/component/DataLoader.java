@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataLoader implements CommandLineRunner {
     @Autowired
-    private UserRepository userRepository;
+    private ClientRepository clientRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
         if (!userRepository.existsByUsername("Paynet")) {
-            userRepository.save(new Client(
+            clientRepository.save(new Client(
                     "Paynet",
                     passwordEncoder.encode("PaynetUchunParolEdiBu")
             ));
-            userRepository.save(new Client(
+            clientRepository.save(new Client(
                     "+998001234567",
                     passwordEncoder.encode("parolClient")
             ));
