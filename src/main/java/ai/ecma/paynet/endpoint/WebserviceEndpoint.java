@@ -5,7 +5,7 @@ import ai.ecma.paynet.entity.Payment;
 import ai.ecma.paynet.entity.PaynetTransaction;
 import ai.ecma.paynet.repository.PaymentRepository;
 import ai.ecma.paynet.repository.PaynetTransactionRepository;
-import ai.ecma.paynet.repository.UserRepository;
+import ai.ecma.paynet.repository.ClientRepository;
 import ai.ecma.paynet.soap.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +31,7 @@ public class WebserviceEndpoint {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserRepository userRepository;
+    private ClientRepository clientRepository;
     @Autowired
     private PaynetTransactionRepository paynetTransactionRepository;
     @Autowired
@@ -80,7 +80,7 @@ public class WebserviceEndpoint {
                         result.setErrorMsg("Транзакция уже существует");
                         result.setStatus(201);
                     } else {
-                        Optional<Client> optionalUser = userRepository.findByUsername(phoneNumber);
+                        Optional<Client> optionalUser = clientRepository.findByUsername(phoneNumber);
                         if (optionalUser.isPresent()) {
                             paynetTransactionRepository.save(new PaynetTransaction(
                                     requestValue.getAmount(),
@@ -338,7 +338,7 @@ public class WebserviceEndpoint {
                 }
             }
             try {
-                if (!phoneNumber.isEmpty() && userRepository.existsByUsername(phoneNumber)) {
+                if (!phoneNumber.isEmpty() && clientRepository.existsByUsername(phoneNumber)) {
                     result.setErrorMsg("Success");
                     result.setStatus(0);
                 } else {
@@ -417,7 +417,7 @@ public class WebserviceEndpoint {
 
     //PAYNET USERNI TEKSHIRAMIZ. HAMMASI YAXSHI BO'LSA USERNI TIZIMGA KRITIAMIZ VA TRUE QAYTARAMIZ
     private boolean authenticatePaynetUser(String username, String password) {
-        Client client = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        Client client = clientRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
         boolean passwordMatch = passwordEncoder.matches(password, client.getPassword());
         if (passwordMatch) {
             Authentication authentication = new UsernamePasswordAuthenticationToken(client, null, new ArrayList<>());
@@ -434,7 +434,7 @@ public class WebserviceEndpoint {
         Client client = (Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         client.setPassword(passwordEncoder.encode(password));
-        userRepository.save(client);
+        clientRepository.save(client);
         return true;
     }
 
