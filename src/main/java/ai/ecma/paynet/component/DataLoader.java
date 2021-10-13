@@ -1,7 +1,7 @@
 package ai.ecma.paynet.component;
 
 import ai.ecma.paynet.entity.Client;
-import ai.ecma.paynet.repository.UserRepository;
+import ai.ecma.paynet.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
